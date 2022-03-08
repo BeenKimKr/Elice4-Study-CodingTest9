@@ -1,6 +1,5 @@
 // 2022. 02. 14
 // 모의고사
-// 미해결: 런타임 에러
 
 import java.util.Arrays;
 
@@ -18,64 +17,39 @@ class Solution {
         // 맞힌 문제 개수 카운트
         int[] correctCount = {0, 0, 0};
         
-        int index0 = 0, index1 = 0, index2 = 0;
         for(int i = 0; i < answers.length; i++) {
-            // 1번
-            if(answers[i] == spj[0][index0]) {
-                correctCount[0] += 1;
+            // 1번 수포자
+            if(answers[i] == spj[0][i % spj[0].length]) {
+                correctCount[0]++;
             }
-            if(index0 > spj[0].length - 1) {
-                index0 = 0;
-            } else {
-                index0++;   
+            
+            // 2번 수포자
+            if(answers[i] == spj[1][i % spj[1].length]) {
+                correctCount[1]++;
             }
-            // 2번
-            if(answers[i] == spj[1][index1]) {
-                correctCount[1] += 1;
-            }
-            if(index1 > spj[1].length - 1) {
-                index1 = 0;
-            } else {
-                index1++;    
-            }
-            // 3번
-            if(answers[i] == spj[2][index2]) {
-                correctCount[2] += 1;
-            }
-            if(index2 > spj[2].length - 1) {
-                index2 = 0;
-            } else {
-                index2++;
+            // 3번 수포자
+            if(answers[i] == spj[2][i % spj[2].length]) {
+                correctCount[2]++;
             }
         }
         
         // 가장 많이 맞힌 사람
+        int middleResult = (correctCount[0] > correctCount[1]) ? 0 : 1;
+        int finalResult = (correctCount[middleResult] > correctCount[2]) ? middleResult : 2;
+        System.out.println(finalResult);
+        int correctSpjCount = 0;
+        answer[correctSpjCount] = finalResult + 1;
         
-//         Arrays.sort(correctCount);
-//         int[] index = {correctCount.length-1};
-//         int max = correctCount[correctCount.length-1];
-//         for(int i = correctCount.length - 2; i > 0; i--) {
-//             if(max < correctCount[i]) {
-                
-//             }
-//         }
-        
-        int max = 0;
-        int answerIdx = 0;
-        for(int i = 0; i < 3; i++) {
-            if(max < correctCount[i]) {
-                max = correctCount[i];
-                answer = new int[3];
-                answerIdx = 0;
-                answer[answerIdx++] = i + 1;
-            } else if(max == correctCount[i]) {
-                answer[answerIdx++] = i + 1;
+        // 동일한 점수를 가지고 있는 사람
+        for(int i = 0; i < correctCount.length; i++) {
+            if(correctCount[i] == correctCount[finalResult] && i != finalResult) {
+                answer[++correctSpjCount] = i + 1;
             }
         }
         
-        if(answerIdx <= 3) {
-            answer = Arrays.copyOfRange(answer, 0, answerIdx);
-        }
+        answer = Arrays.copyOfRange(answer, 0, correctSpjCount + 1);
+        Arrays.sort(answer);
+        
         return answer;
     }
 }

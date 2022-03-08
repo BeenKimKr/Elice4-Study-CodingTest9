@@ -37,6 +37,7 @@ class Solution {
             
             else if(idxNum == supo.length) {
                 idxNum = 0;
+                continue;
             }
             
             else if(supo[idxNum] == answers[idxAnswer]) {
